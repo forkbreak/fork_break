@@ -1,7 +1,5 @@
 # ForkBreak
 
-Fork with breakpoints, for testing multiprocess behaviour.
-
 Testing multiprocess behaviour is difficult and requires a way to synchronize processes at
 specific execution points. This gem allows the parent process to control the behaviour of child processes using
 breakpoints. It was originally built for testing the behaviour of database transactions and locking mechanisms.
