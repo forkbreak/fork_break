@@ -90,5 +90,15 @@ module ForkBreak
         counter_after_synced_execution(counter_path, with_lock = false).should == 1
       end
     end
+
+    it "raises the process exception" do
+      class MyException < StandardError; end
+
+      process = ForkBreak::Process.new do
+        raise MyException
+      end
+
+      expect { process.finish.wait }.to raise_error(MyException)
+    end
   end
 end
