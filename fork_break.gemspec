@@ -14,7 +14,7 @@ breakpoints. It was originally built for testing the behaviour of database trans
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "fork_break"
   gem.require_paths = ["lib"]
-  gem.version       = "0.1.1"
-  gem.add_dependency "fork"
-  gem.add_development_dependency "rspec"
+  gem.version       = "0.1.2"
+  gem.add_dependency "fork"              , "= 1.0.1"
+  gem.add_development_dependency "rspec" , "= 3.1.0"
 end
