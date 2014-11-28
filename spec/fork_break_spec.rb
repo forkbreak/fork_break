@@ -12,16 +12,16 @@ module ForkBreak
           breakpoints << :after_first_file
           FileUtils.touch(second_file)
         end
-        File.exists?(first_file).should be_false
-        File.exists?(second_file).should be_false
+        expect(File.exists?(first_file)).to be_falsey
+        expect(File.exists?(second_file)).to be_falsey
         
         process.run_until(:after_first_file).wait
-        File.exists?(first_file).should be_true
-        File.exists?(second_file).should be_false
+        expect(File.exists?(first_file)).to be_truthy
+        expect(File.exists?(second_file)).to be_falsey
 
         process.finish.wait
-        File.exists?(first_file).should be_true
-        File.exists?(second_file).should be_true
+        expect(File.exists?(first_file)).to be_truthy
+        expect(File.exists?(second_file)).to be_truthy
       end
     end
   
@@ -84,10 +84,10 @@ module ForkBreak
       Dir.mktmpdir do |tmpdir|
         counter_path = File.join(tmpdir, "counter")
 
-        counter_after_synced_execution(counter_path, with_lock = true).should == 2
+        expect(counter_after_synced_execution(counter_path, with_lock = true)).to eq(2)
 
         File.unlink(counter_path)
-        counter_after_synced_execution(counter_path, with_lock = false).should == 1
+        expect(counter_after_synced_execution(counter_path, with_lock = false)).to eq(1)
       end
     end
 
