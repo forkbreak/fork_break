@@ -45,6 +45,8 @@ module ForkBreak
           raise BreakpointNotReachedError.new("Never reached breakpoint #{@next_breakpoint.inspect}")
         end
       end
+    rescue EOFError => exception
+      raise @fork.exception || exception
     end
 
     def finish
@@ -65,6 +67,8 @@ module ForkBreak
         @next_breakpoint = @fork.receive_object unless symbol == :forkbreak_end
         puts "#{@fork.pid} received #{@next_breakpoint}" if @debug
       end
+    rescue EOFError => exception
+      raise @fork.exception || exception
     end
   end
 end
