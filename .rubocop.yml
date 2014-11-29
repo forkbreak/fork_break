@@ -1,0 +1,21 @@
+Documentation:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+Lint/RescueException:
+  Enabled: false
+
+SignalException:
+  EnforcedStyle: only_raise
+  SupportedStyles:
+    - only_raise
+    - only_fail
+    - semantic
+
+Metrics/AbcSize:
+  Max: 18
+
+Metrics/MethodLength:
+  Max: 15
