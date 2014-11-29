@@ -25,14 +25,17 @@ module ForkBreak
       self
     end
 
-    def wait
-      loop do
-        brk = @fork.receive_object
-        puts "Parent is receiving object #{brk} from #{@fork.pid}" if @debug
-        if brk == @next_breakpoint
-          return self
-        elsif brk == :forkbreak_end
-          raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
+    def wait(options = {})
+      # A timeout value of nil will execute the block without any timeout
+      Timeout.timeout(options[:timeout], WaitTimeout) do
+        loop do
+          brk = @fork.receive_object
+          puts "Parent is receiving object #{brk} from #{@fork.pid}" if @debug
+          if brk == @next_breakpoint
+            return self
+          elsif brk == :forkbreak_end
+            raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
+          end
         end
       end
     rescue EOFError => exception

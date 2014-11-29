@@ -95,4 +95,12 @@ describe ForkBreak::Process do
 
     expect { process.finish.wait }.to raise_error(MyException)
   end
+
+  it 'raises a wait timeout eror when the process takes longer than the specified wait timeout' do
+    process = ForkBreak::Process.new do
+      sleep(1)
+    end
+
+    expect { process.finish.wait(timeout: 0.01) }.to raise_error(ForkBreak::WaitTimeout)
+  end
 end
