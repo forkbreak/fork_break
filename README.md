@@ -1,5 +1,7 @@
 # ForkBreak
 
+[![Build Status](https://secure.travis-ci.org/remen/fork_break.png)](http://travis-ci.org/remen/fork_break)
+
 Testing multiprocess behaviour is difficult and requires a way to synchronize processes at
 specific execution points. This gem allows the parent process to control the behaviour of child processes using
 breakpoints. It was originally built for testing the behaviour of database transactions and locking mechanisms.
