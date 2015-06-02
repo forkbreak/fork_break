@@ -1,6 +1,6 @@
 # ForkBreak
 
-[![Build Status](https://secure.travis-ci.org/remen/fork_break.png)](http://travis-ci.org/remen/fork_break)
+[![Build Status](https://secure.travis-ci.org/remen/fork_break.png)](http://travis-ci.org/remen/fork_break) [![Dependency Status](https://gemnasium.com/remen/fork_break.png)](https://gemnasium.com/remen/fork_break) [![Gem Version](https://badge.fury.io/rb/fork_break.svg)](http://badge.fury.io/rb/fork_break) [![Code Climate](https://codeclimate.com/github/remen/fork_break/badges/gpa.svg)](https://codeclimate.com/github/remen/fork_break)
 
 Testing multiprocess behaviour is difficult and requires a way to synchronize processes at
 specific execution points. This gem allows the parent process to control the behaviour of child processes using
