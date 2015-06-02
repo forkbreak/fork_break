@@ -115,3 +115,6 @@ process.finish.wait(timeout: 1) # will raise ForkBreak::WaitTimeout after 1 seco
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+ForkBreak is released under the [MIT License](http://www.opensource.org/licenses/MIT).
