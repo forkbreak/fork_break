@@ -98,6 +98,16 @@ puts counter_after_synced_execution("counter_with_lock",    true)  # => 2
 puts counter_after_synced_execution("counter_without_lock", false) # => 1
 ```
 
+There's also the possibility of adding a predefined timeout to the wait function and having it raise an exception.
+
+```ruby
+process = ForkBreak::Process.new do
+  sleep(5)
+end
+
+process.finish.wait(timeout: 1) # will raise ForkBreak::WaitTimeout after 1 second
+```
+
 ## Contributing
 
 1. Fork it
