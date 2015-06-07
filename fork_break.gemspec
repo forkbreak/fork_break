@@ -1,4 +1,7 @@
-require_relative 'lib/fork_break/version'
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'fork_break/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ['Petter Remen', 'Pedro Carriço']
