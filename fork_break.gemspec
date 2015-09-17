@@ -1,4 +1,7 @@
-require_relative 'lib/fork_break/version'
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'fork_break/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ['Petter Remen', 'Pedro Carriço']
@@ -10,8 +13,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'http://github.com/forkbreak/fork_break'
   gem.licenses      = ['MIT']
   gem.files         = `git ls-files`.split($OUTPUT_RECORD_SEPARATOR)
-  gem.executables   = gem.files.grep(/^bin\//).map { |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(/^(test|spec|features)\//)
+  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = 'fork_break'
   gem.require_paths = ['lib']
   gem.version       = ForkBreak::VERSION

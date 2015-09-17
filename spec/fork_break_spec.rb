@@ -59,7 +59,7 @@ describe ForkBreak::Process do
       end
     end
 
-    def counter_after_synced_execution(counter_path, with_lock) # rubocop:disable Metrics/AbcSize
+    def counter_after_synced_execution(counter_path, with_lock)
       process1, process2 = 2.times.map do
         ForkBreak::Process.new { FileCounter.open(counter_path, with_lock).increase }
       end
