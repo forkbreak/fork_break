@@ -4,6 +4,8 @@ module ForkBreak
       attr_accessor :breakpoint_setter
     end
 
+    attr_reader :return_value
+
     @breakpoint_setter = NullBreakpointSetter.new
 
     def initialize(debug = false, &block)
@@ -12,10 +14,11 @@ module ForkBreak
         self.class.breakpoint_setter = breakpoints = BreakpointSetter.new(child_fork, debug)
 
         breakpoints << :forkbreak_start
-        block.call(breakpoints)
+        returned_value = block.call(breakpoints)
         breakpoints << :forkbreak_end
 
         self.class.breakpoint_setter = nil
+        returned_value
       end
     end
 
@@ -33,6 +36,9 @@ module ForkBreak
         loop do
           brk = @fork.receive_object
           puts "Parent is receiving object #{brk} from #{@fork.pid}" if @debug
+
+          @return_value = @fork.return_value if brk == :forkbreak_end
+
           if brk == @next_breakpoint
             return self
           elsif brk == :forkbreak_end

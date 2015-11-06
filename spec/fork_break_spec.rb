@@ -118,4 +118,18 @@ describe ForkBreak::Process do
 
     expect { process.finish.wait(timeout: 0.01) }.to raise_error(ForkBreak::WaitTimeout)
   end
+
+  it 'keeps the return value of the process' do
+    class Foo
+      include ForkBreak::Breakpoints
+
+      def bar
+        'baz'
+      end
+    end
+
+    process = ForkBreak::Process.new { Foo.new.bar }.finish.wait
+
+    expect(process.return_value).to eq('baz')
+  end
 end
