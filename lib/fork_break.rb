@@ -1,4 +1,5 @@
 require 'fork'
+require 'fork_break/null_breakpoint_setter'
 require 'fork_break/breakpoint_setter'
 require 'fork_break/breakpoints'
 require 'fork_break/process'

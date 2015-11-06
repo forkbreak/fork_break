@@ -4,6 +4,8 @@ module ForkBreak
       attr_accessor :breakpoint_setter
     end
 
+    @breakpoint_setter = NullBreakpointSetter.new
+
     def initialize(debug = false, &block)
       @debug = debug
       @fork = Fork.new(:return, :to_fork, :from_fork) do |child_fork|

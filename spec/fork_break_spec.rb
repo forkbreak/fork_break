@@ -86,6 +86,21 @@ describe ForkBreak::Process do
     end
   end
 
+  it 'ignores breakpoints when running outside a ForkBreak process' do
+    class Foo
+      include ForkBreak::Breakpoints
+
+      def bar
+        breakpoints << :test
+        'baz'
+      end
+    end
+
+    expect(Foo.new.breakpoints).to be_kind_of(ForkBreak::NullBreakpointSetter)
+    expect { Foo.new.bar }.to_not raise_error
+    expect(Foo.new.bar).to eq('baz')
+  end
+
   it 'raises the process exception' do
     class MyException < StandardError; end
 

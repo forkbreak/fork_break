@@ -100,6 +100,9 @@ puts counter_after_synced_execution("counter_with_lock",    true)  # => 2
 puts counter_after_synced_execution("counter_without_lock", false) # => 1
 ```
 
+When running outside a ForkBreak process the breakpoints will be ignored so that you can use the same classes with
+breakpoints in production code.
+
 There's also the possibility of adding a predefined timeout to the wait function and having it raise an exception.
 
 ```ruby
