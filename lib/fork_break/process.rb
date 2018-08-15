@@ -14,8 +14,13 @@ module ForkBreak
         self.class.breakpoint_setter = breakpoints = BreakpointSetter.new(child_fork, debug)
 
         breakpoints << :forkbreak_start
-        returned_value = block.call(breakpoints)
-        breakpoints << :forkbreak_end
+        begin
+          returned_value = block.call(breakpoints)
+          breakpoints << :forkbreak_end
+        rescue Exception => e
+          breakpoints << e
+          raise
+        end
 
         self.class.breakpoint_setter = nil
         returned_value
@@ -41,6 +46,8 @@ module ForkBreak
 
           if brk == @next_breakpoint
             return self
+          elsif brk.is_a?(Exception)
+            raise brk
           elsif brk == :forkbreak_end
             raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
           end
