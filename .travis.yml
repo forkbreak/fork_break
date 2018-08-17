@@ -1,11 +1,9 @@
 language: ruby
 rvm:
-  - 1.9.3
-  - 2.1.7
   - 2.2.3
+  - 2.5.1
   - jruby-19mode
   - jruby-head
-  - rbx-2
   - ruby-head
 
 matrix:
@@ -17,7 +15,7 @@ before_install:
   - gem update --system
   - gem install bundler -v 1.10.6
 install: 'bundle'
-script: 'bundle exec rspec && bundle exec rubocop'
+script: 'bundle exec rake'
 notifications:
-    email:
-        - pedro.carrico@gmail.com
+  email:
+    - pedro.carrico@gmail.com
