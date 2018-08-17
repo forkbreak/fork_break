@@ -25,8 +25,8 @@ describe ForkBreak::Process do
   end
 
   it 'raises an error (on wait) if a breakpoint is not encountered' do
-    foo = ForkBreak::Process.new do |breakpoints|
-      breakpoints << :will_not_run if false # rubocop:disable LiteralInCondition
+    foo = ForkBreak::Process.new do |_breakpoints|
+      # noop
     end
     expect do
       foo.run_until(:will_not_run).wait
@@ -38,7 +38,7 @@ describe ForkBreak::Process do
       include ForkBreak::Breakpoints
 
       def self.open(path, use_lock = true)
-        file = File.open(path, File::RDWR | File::CREAT, 0600)
+        file = File.open(path, File::RDWR | File::CREAT, 0o600)
         new(file, use_lock)
       end
 
@@ -60,7 +60,7 @@ describe ForkBreak::Process do
     end
 
     def counter_after_synced_execution(counter_path, with_lock)
-      process1, process2 = 2.times.map do
+      process1, process2 = Array.new(2) do
         ForkBreak::Process.new { FileCounter.open(counter_path, with_lock).increase }
       end
 

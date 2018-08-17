@@ -17,11 +17,19 @@ SignalException:
 Metrics/AbcSize:
   Max: 18
 
-Metrics/MethodLength:
-  Max: 15
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
 
 Metrics/CyclomaticComplexity:
   Max: 7
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
 
 Metrics/PerceivedComplexity:
   Max: 8
