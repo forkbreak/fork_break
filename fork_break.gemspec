@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.name          = 'fork_break'
   gem.require_paths = ['lib']
   gem.version       = ForkBreak::VERSION
+  gem.required_ruby_version = '~> 2.2'
   gem.add_dependency 'fork', '= 1.0.1'
   gem.add_development_dependency 'rake', '~> 12.3.1'
   gem.add_development_dependency 'rspec', '~> 3.8.0'
