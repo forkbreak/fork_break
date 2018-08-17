@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.version       = ForkBreak::VERSION
   gem.add_dependency 'fork', '= 1.0.1'
-  gem.add_development_dependency 'rspec', '~> 3.1', '>= 3.1.0'
-  gem.add_development_dependency 'rubocop', '~> 0.27', '>= 0.27.1'
+  gem.add_development_dependency 'rake', '~> 12.3.1'
+  gem.add_development_dependency 'rspec', '~> 3.8.0'
+  gem.add_development_dependency 'rubocop', '~> 0.58.2'
 end
