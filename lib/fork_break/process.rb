@@ -20,9 +20,10 @@ module ForkBreak
         rescue StandardError => e
           breakpoints << e
           raise
+        ensure
+          self.class.breakpoint_setter = nil
         end
 
-        self.class.breakpoint_setter = nil
         returned_value
       end
     end
