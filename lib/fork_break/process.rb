@@ -17,7 +17,7 @@ module ForkBreak
         begin
           returned_value = block.call(breakpoints)
           breakpoints << :forkbreak_end
-        rescue Exception => e
+        rescue StandardError => e
           breakpoints << e
           raise
         end
@@ -46,7 +46,7 @@ module ForkBreak
 
           if brk == @next_breakpoint
             return self
-          elsif brk.is_a?(Exception)
+          elsif brk.is_a?(StandardError)
             raise brk
           elsif brk == :forkbreak_end
             raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
