@@ -14,10 +14,15 @@ module ForkBreak
         self.class.breakpoint_setter = breakpoints = BreakpointSetter.new(child_fork, debug)
 
         breakpoints << :forkbreak_start
-        returned_value = block.call(breakpoints)
-        breakpoints << :forkbreak_end
+        begin
+          returned_value = block.call(breakpoints)
+          breakpoints << :forkbreak_end
+        rescue StandardError => e
+          breakpoints << e
+        ensure
+          self.class.breakpoint_setter = nil
+        end
 
-        self.class.breakpoint_setter = nil
         returned_value
       end
     end
@@ -26,7 +31,11 @@ module ForkBreak
       @next_breakpoint = breakpoint
       @fork.execute unless @fork.pid
       puts "Parent is sending object #{breakpoint} to #{@fork.pid}" if @debug
-      @fork.send_object(breakpoint)
+      begin
+        @fork.send_object(breakpoint)
+      rescue Errno::EPIPE
+        # Already ended
+      end
       self
     end
 
@@ -41,6 +50,8 @@ module ForkBreak
 
           if brk == @next_breakpoint
             return self
+          elsif brk.is_a?(StandardError)
+            raise brk
           elsif brk == :forkbreak_end
             raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
           end

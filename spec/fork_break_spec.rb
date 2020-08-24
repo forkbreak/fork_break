@@ -111,7 +111,69 @@ describe ForkBreak::Process do
     expect { process.finish.wait }.to raise_error(MyException)
   end
 
-  it 'raises a wait timeout eror when the process takes longer than the specified wait timeout' do
+  it 'raises process exception when waiting on breakpoints' do
+    class MyException < StandardError; end
+
+    class FileLock
+      include ForkBreak::Breakpoints
+
+      def initialize(path)
+        @file = File.open(path, File::RDWR | File::CREAT, 0600)
+      end
+
+      def set_once
+        breakpoints << :before_lock
+        @file.flock(File::LOCK_EX)
+        value = @file.read.to_i
+        breakpoints << :after_read
+        raise MyException if value > 0
+        @file.rewind
+        @file.write("1\n")
+        @file.flush
+        @file.truncate(@file.pos)
+      end
+    end
+
+    Dir.mktmpdir do |tmpdir|
+      lock_path = File.join(tmpdir, 'lock')
+
+      process_1, process_2 = 2.times.map do
+        ForkBreak::Process.new { FileLock.new(lock_path).set_once }
+      end
+
+      expect do
+        process_1.run_until(:after_read).wait
+        process_2.run_until(:before_lock).wait
+        process_2.run_until(:after_read) && sleep(0.1)
+        process_1.finish.wait
+        process_2.finish.wait
+      end.to raise_error(MyException)
+
+      File.unlink(lock_path)
+    end
+  end
+
+  it 'raises process exception quickly when waiting on breakpoints' do
+    class MyException < StandardError; end
+
+    class Raiser
+      include ForkBreak::Breakpoints
+
+      def run
+        raise MyException
+        breakpoints << :after_raise
+      end
+    end
+
+    process = ForkBreak::Process.new { Raiser.new.run }
+
+    expect do
+      process.run_until(:after_raise) && sleep(0.1)
+      process.finish.wait
+    end.to raise_error(MyException)
+  end
+
+  it 'raises a wait timeout error when the process takes longer than the specified wait timeout' do
     process = ForkBreak::Process.new do
       sleep(1)
     end
