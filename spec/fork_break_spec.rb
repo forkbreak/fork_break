@@ -153,6 +153,26 @@ describe ForkBreak::Process do
     end
   end
 
+  it 'raises process exception quickly when waiting on breakpoints' do
+    class MyException < StandardError; end
+
+    class Raiser
+      include ForkBreak::Breakpoints
+
+      def run
+        raise MyException
+        breakpoints << :after_raise
+      end
+    end
+
+    process = ForkBreak::Process.new { Raiser.new.run }
+
+    expect do
+      process.run_until(:after_raise) && sleep(0.1)
+      process.finish.wait
+    end.to raise_error(MyException)
+  end
+
   it 'raises a wait timeout error when the process takes longer than the specified wait timeout' do
     process = ForkBreak::Process.new do
       sleep(1)

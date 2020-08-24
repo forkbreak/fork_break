@@ -31,7 +31,11 @@ module ForkBreak
       @next_breakpoint = breakpoint
       @fork.execute unless @fork.pid
       puts "Parent is sending object #{breakpoint} to #{@fork.pid}" if @debug
-      @fork.send_object(breakpoint)
+      begin
+        @fork.send_object(breakpoint)
+      rescue Errno::EPIPE
+        # Already ended
+      end
       self
     end
 
