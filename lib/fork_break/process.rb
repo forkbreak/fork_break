@@ -19,7 +19,6 @@ module ForkBreak
           breakpoints << :forkbreak_end
         rescue StandardError => e
           breakpoints << e
-          raise
         ensure
           self.class.breakpoint_setter = nil
         end
