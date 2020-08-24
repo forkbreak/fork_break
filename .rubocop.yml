@@ -15,13 +15,34 @@ SignalException:
     - semantic
 
 Metrics/AbcSize:
-  Max: 18
+  Max: 19
+
+Metrics/BlockLength:
+  Enabled: false
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 16
 
 Metrics/CyclomaticComplexity:
-  Max: 7
+  Max: 8
 
 Metrics/PerceivedComplexity:
-  Max: 8
+  Max: 9
+
+Naming/VariableNumber:
+  Enabled: false
+
+Performance/RedundantBlockCall:
+  Enabled: false
+
+Performance/TimesMap:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/NumericLiteralPrefix:
+  Enabled: false

@@ -30,7 +30,7 @@ module ForkBreak
     def run_until(breakpoint)
       @next_breakpoint = breakpoint
       @fork.execute unless @fork.pid
-      puts "Parent is sending object #{breakpoint} to #{@fork.pid}" if @debug
+      print "Parent sending run_until #{breakpoint.inspect} to #{@fork.pid}\n" if @debug
       begin
         @fork.send_object(breakpoint)
       rescue Errno::EPIPE
@@ -44,16 +44,16 @@ module ForkBreak
       Timeout.timeout(options[:timeout], WaitTimeout) do
         loop do
           brk = @fork.receive_object
-          puts "Parent is receiving object #{brk} from #{@fork.pid}" if @debug
+          print "#{brk.inspect} reached in #{@fork.pid} received by parent\n" if @debug
 
           @return_value = @fork.return_value if brk == :forkbreak_end
 
-          if brk == @next_breakpoint
-            return self
-          elsif brk.is_a?(StandardError)
+          return self if brk == @next_breakpoint
+          if brk.is_a?(StandardError)
             raise brk
-          elsif brk == :forkbreak_end
-            raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
+          end
+          if brk == :forkbreak_end
+            raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect} in #{@fork.pid}"
           end
         end
       end
