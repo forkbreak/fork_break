@@ -108,7 +108,7 @@ describe ForkBreak::Process do
       raise MyException
     end
 
-    expect { process.finish.wait }.to raise_error(MyException)
+    expect { process.finish.wait(timeout: 1) }.to raise_error(MyException)
   end
 
   it 'raises process exception when waiting on breakpoints' do
