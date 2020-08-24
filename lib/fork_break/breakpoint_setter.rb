@@ -10,7 +10,7 @@ module ForkBreak
       @fork.send_object(symbol)
       if symbol == @next_breakpoint
         @next_breakpoint = @fork.receive_object unless symbol == :forkbreak_end
-        puts "#{@fork.pid} received #{@next_breakpoint}" if @debug
+        print "#{@fork.pid} received #{@next_breakpoint}\n" if @debug
       end
     rescue EOFError => exception
       raise @fork.exception || exception
