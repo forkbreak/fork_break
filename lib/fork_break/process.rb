@@ -48,11 +48,11 @@ module ForkBreak
 
           @return_value = @fork.return_value if brk == :forkbreak_end
 
-          if brk == @next_breakpoint
-            return self
-          elsif brk.is_a?(StandardError)
+          return self if brk == @next_breakpoint
+          if brk.is_a?(StandardError)
             raise brk
-          elsif brk == :forkbreak_end
+          end
+          if brk == :forkbreak_end
             raise BreakpointNotReachedError, "Never reached breakpoint #{@next_breakpoint.inspect}"
           end
         end
