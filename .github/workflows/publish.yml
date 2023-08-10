@@ -1,0 +1,28 @@
+name: Publish Gem
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - name: Bundle Install
+        run: bundle install --jobs 4 --retry 3
+      - name: Set Credentials
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:github: Bearer ${GITHUB_TOKEN}\n" > $HOME/.gem/credentials
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Publish to GitHub Packages
+        run: |
+          export OWNER=$( echo ${{ github.repository }} | cut -d "/" -f 1 )
+          gem build station.gemspec
+          gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} *.gem
+          gem push *.gem
